@@ -23,6 +23,8 @@ namespace CSV_ListeningHabits
 
             Console.WriteLine(TotalPlaysByArtistNameInYear("Skrillex", "2014"));
 
+            Console.WriteLine(TotalPlaysByArtistName("Skrillex"));
+
             
 
 
@@ -62,7 +64,9 @@ namespace CSV_ListeningHabits
         /// <returns>total number of plays</returns>
         public static int TotalPlaysByArtistName(string artistName)
         {
-            return musicDataList.Count(x => x.Artist.ToLower().Contains(artistName.ToLower()));
+            //WRONG because of Contains. it might happen like Skrillex feat smth will be true too
+            //return musicDataList.Count(x => x.Artist.ToLower().Contains(artistName.ToLower()));
+            return musicDataList.Count(x => x.Artist.ToLower() == artistName.ToLower());
         }
         /// <summary>
         /// A function that returns the number of plays by a specific artist in a specific year
@@ -85,7 +89,9 @@ namespace CSV_ListeningHabits
         /// <returns>number of unique artists</returns>
         public static int CountUniqueArtists()
         {
-            return musicDataList.Select(x => x.Artist).Distinct().ToList().Count;
+            //return musicDataList.Select(x => x.Artist).Distinct().ToList().Count;
+            return musicDataList.Select(x => x.Artist).Distinct().Count();
+
         }
         /// <summary>
         /// A function that returns the number of unique artists in a given year
@@ -95,7 +101,7 @@ namespace CSV_ListeningHabits
         public static int CountUniqueArtists(string year)
         {
             //return musicDataList.Where(x => x.Time.Year.Equals(int.Parse(year))).Select(y => y.Artist).Distinct().ToList().Count;
-            return musicDataList.Where(x => x.Time.Year.Equals(int.Parse(year))).Select(y => y.Artist).Distinct().Count();
+            return musicDataList.Where(x => x.Time.Year == int.Parse(year)).Select(y => y.Artist).Distinct().Count();
 
         }
         /// <summary>
@@ -126,7 +132,7 @@ namespace CSV_ListeningHabits
         public static string MostPopularArtistByYear(string year)
         {
             //IEnumerable<IGrouping<string, int>> groups = musicDataList.Where(x => x.Time.Year == int.Parse(year)).GroupBy(x => x.Artist);
-            //return musicDataList.Where(x => x.Time.Year == int.Parse(year)).GroupBy(x => x.Artist).OrderByDescending(x => x.Count()).First().First().Artist;
+            //return musicDataList.Where(x => x.Time.Year == int.Parse(year)).GroupBy(x => x.Artist).OrderByDescending(x => x.Count()).First().First().Artist; ?? [0].[1]
             return musicDataList.Where(x => x.Time.Year == int.Parse(year)).GroupBy(x => x.Artist).OrderByDescending(x => x.Count()).First().Key;
 
         }
